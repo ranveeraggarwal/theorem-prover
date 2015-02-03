@@ -8,7 +8,9 @@ def stripBrackets(term):
 		return term
 
 def modusPonens(hypothesesInit):
-	while True:
+	bo = False
+	while not bo:
+		bo = True
 		hypotheses = hypothesesInit
 		for term1 in hypotheses:
 			for term2 in hypotheses:
@@ -20,15 +22,14 @@ def modusPonens(hypothesesInit):
 						delimIndex = len(term1)
 						if term2[delimIndex] == "-":
 							subterm2 = term2[delimIndex+2:]
-							hypotheses.append(subterm2)
+							hypothesesInit.append(subterm2)
+							if (len(hypotheses) != len(hypothesesInit)):
+								bo = False
 						else:
 							pass
 					else:
 						pass
-		if (hypothesesInit == hypotheses): 
-			break
-		else:
-			hypothesesInit = hypotheses
+		hypotheses = hypothesesInit
 	if "f" in hypothesesInit:
 		return True
 	else:
