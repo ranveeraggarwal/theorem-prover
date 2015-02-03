@@ -1,4 +1,3 @@
-#(p->q)->((~p->q)->q)
 def checkWhole(theExpression):
 	expClone = theExpression
 	if theExpression[0] != "(" or theExpression[-1] != ")":
@@ -17,7 +16,6 @@ def checkWhole(theExpression):
 
 def tokenize(theExpression):
 	if len(theExpression) == 1:
-		#print "len 1: ",[theExpression]
 		return [theExpression]
 	elif len(theExpression) == 0:
 		return []
@@ -31,7 +29,6 @@ def tokenize(theExpression):
 			for i in xrange(0,len(theExpression)):
 				if theExpression[i] == "-" and brackstackCount == 0:
 					delimIndex = i
-					#print theExpression
 					break
 				else:
 					if theExpression[i] == "(":
@@ -48,9 +45,3 @@ def getLhs(theExpression):
 	temp = tokenize(theExpression)
 	temp[0] = "~" + temp[0]
 	return temp[::-1]
-
-#(p->q)->((~p->q)->q)
-expr = "((p->q)->((~p->q)->q))"
-
-print expr
-print getLhs(expr)
