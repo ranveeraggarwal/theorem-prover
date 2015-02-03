@@ -6,9 +6,9 @@ f = f.read()
 
 listOfExpressions = f.split("\n")
 
-expr = listOfExpressions[0] #(p->q)->((~p->q)->q)
+expr = listOfExpressions[1] #(p->q)->((~p->q)->q)
 hypotheses = getLhs(expr) #['(p->q)', '(~p->q)', '~q']
-print modusPonens()
+print modusPonens(hypotheses)
 
 '''
 We need to prove them false by modus ponens
