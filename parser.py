@@ -17,6 +17,7 @@ def checkWhole(theExpression):
 
 def tokenize(theExpression):
 	if len(theExpression) == 1:
+		#print "len 1: ",[theExpression]
 		return [theExpression]
 	elif len(theExpression) == 0:
 		return []
@@ -30,7 +31,7 @@ def tokenize(theExpression):
 			for i in xrange(0,len(theExpression)):
 				if theExpression[i] == "-" and brackstackCount == 0:
 					delimIndex = i
-					print theExpression
+					#print theExpression
 					break
 				else:
 					if theExpression[i] == "(":
@@ -39,48 +40,17 @@ def tokenize(theExpression):
 						brackstackCount -= 1
 					else:
 						pass
-			print delimIndex
-			return tokenize(theExpression[delimIndex+2:]).append(theExpression[0:delimIndex])
+			temp = tokenize(theExpression[delimIndex +2:])
+			temp.append(theExpression[0:delimIndex])
+			return temp
 
+def getLhs(theExpression):
+	temp = tokenize(theExpression)
+	temp[0] = "~" + temp[0]
+	return temp[::-1]
 
 #(p->q)->((~p->q)->q)
 expr = "((p->q)->((~p->q)->q))"
 
-print tokenize(expr)
-
-
-'''
-rhs = expr
-lhs = []
-brackstack = []
-aTerm = ""
-i = 0
-
-while True:
-	if rhs == "":
-		break
-	elif checkWhole(rhs):
-		rhs = rhs[1:-1]
-	else:
-		if brackstack == [] and aTerm != "":
-			lhs.append(aTerm)
-			aTerm = ""
-			rhs = rhs[2:]
-			i = i + 2
-		else:
-			if rhs[0] == "(":
-				brackstack.append(i)
-				rhs = rhs[1:]
-				i = i + 1
-			elif rhs[0] == ")":
-				current = brackstack[-1]
-				brackstack = brackstack[:-1]
-				if brackstack == []:
-					aTerm = expr[current:i]
-					print aTerm
-				rhs = rhs[1:]
-				i = i + 1
-			else:
-				rhs = rhs[1:]
-				i = i+1
-'''
+print expr
+print getLhs(expr)
