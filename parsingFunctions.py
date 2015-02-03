@@ -1,4 +1,14 @@
 def checkWhole(theExpression):
+	'''
+	checkWhole(theExpression)->bool
+	
+	Checks whether the whole expression is within brackets.
+
+	checkWhole((p->q))
+	> True
+	checkWhole(p->(q->r))
+	> False
+	'''
 	expClone = theExpression
 	if theExpression[0] != "(" or theExpression[-1] != ")":
 		return False
@@ -15,6 +25,16 @@ def checkWhole(theExpression):
 		return False
 
 def tokenize(theExpression):
+	'''
+	tokenize(theExpression)->[string, string, ...]
+	
+	Tokenises an expressions in a way the Deduction theorem would (not exactly; this is an intermediate function) bring variables from right to left.
+
+	tokenize("(p->q)")
+	> ['q', 'p']
+	tokenize("(p->q)->r")
+	> ['r', '(p->q)']
+	'''
 	if len(theExpression) == 1:
 		return [theExpression]
 	elif len(theExpression) == 0:
@@ -42,6 +62,16 @@ def tokenize(theExpression):
 			return temp
 
 def getLhs(theExpression):
+	'''
+	getLhs(theExpression)->[string, string, ...]
+	
+	Gets tokens on the LHS exactly as the deduction theorem would.
+
+	tokenize("(p->q)")
+	> ['p', '~q']
+	tokenize("(p->q)->r")
+	> ['(p->q)', '~r']
+	'''
 	temp = tokenize(theExpression)
 	temp[0] = "~" + temp[0]
 	return temp[::-1]
