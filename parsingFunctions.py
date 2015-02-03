@@ -35,7 +35,7 @@ def tokenize(theExpression):
 	tokenize("(p->q)->r")
 	> ['r', '(p->q)']
 	'''
-	if len(theExpression) == 1:
+	if len(theExpression) == 1 or len(theExpression) == 2:
 		return [theExpression]
 	elif len(theExpression) == 0:
 		return []
@@ -67,11 +67,25 @@ def getLhs(theExpression):
 	
 	Gets tokens on the LHS exactly as the deduction theorem would.
 
-	tokenize("(p->q)")
-	> ['p', '~q']
-	tokenize("(p->q)->r")
-	> ['(p->q)', '~r']
+	getLhs("(p->q)")
+	> ['p', '(q->f)']
+	getLhs("(p->q)->r")
+	> ['(p->q)', '(r->f)']
 	'''
 	temp = tokenize(theExpression)
-	temp[0] = "~" + temp[0]
+	if (temp[0][0] == "~"):
+		temp[0] = temp[0][1:]
+	else:
+		temp[0] = "~" + temp[0]
+	for j in xrange(0, len(temp)):
+		tempHypo = temp[j]
+		while True:
+			if "~" in tempHypo:
+				for i in xrange(0, len(tempHypo)):
+					if tempHypo[i] == "~":
+						tempHypo = tempHypo[:i] + "(" + tempHypo[i+1] + "->f)" + tempHypo[i+2:]
+						break
+			else:
+				temp[j] = tempHypo
+				break
 	return temp[::-1]
