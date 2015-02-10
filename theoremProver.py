@@ -7,7 +7,9 @@ f = f.read()
 listOfExpressions = f.split("\n")
 
 expr = listOfExpressions[0] #(p->q)->((~p->q)->q)
+print expr
 hypotheses = getLhs(expr) #['(p->q)', '(~p->q)', '~q']
+print hypotheses
 print modusPonens(hypotheses)
 
 '''

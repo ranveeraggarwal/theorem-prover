@@ -1,4 +1,12 @@
-from parsingFunctions import checkWhole
+from parsingFunctions import checkWhole, getLhs
+import time
+
+def getAxiom(index):
+	with open('axioms.ini', 'r') as f:
+		x = f.readlines();
+	temp = x[index-1].strip()
+	print temp
+	return getLhs(temp);
 
 #['p', '(p->q)', '(q->f)']
 def stripBrackets(term):
@@ -7,11 +15,23 @@ def stripBrackets(term):
 	else:
 		return term
 
+def insertIntoList(lis, term):
+	yes = False
+	for item in lis:
+		if item == term:
+			yes = True
+			break
+	if not yes:
+		lis.append(term)
+		return lis[:]
+
 def modusPonens(hypothesesInit):
 	bo = False
+	count = 1
 	while not bo:
 		bo = True
-		hypotheses = hypothesesInit
+		hypotheses = hypothesesInit[:]
+
 		for term1 in hypotheses:
 			for term2 in hypotheses:
 				if (term1 == term2):
@@ -22,15 +42,32 @@ def modusPonens(hypothesesInit):
 						delimIndex = len(term1)
 						if term2[delimIndex] == "-":
 							subterm2 = term2[delimIndex+2:]
-							hypothesesInit.append(subterm2)
+							yes = False
+							for item in hypothesesInit:
+								if item == subterm2:
+									yes = True
+									break
+							if not yes:
+								hypothesesInit.append(subterm2)
 							if (len(hypotheses) != len(hypothesesInit)):
 								bo = False
 						else:
 							pass
 					else:
 						pass
-		hypotheses = hypothesesInit
+		hypotheses = hypothesesInit[:]
+
 	if "f" in hypothesesInit:
 		return True
 	else:
-		return False
+		print hypotheses
+		axiom = raw_input("Enter axiom number: ")
+		if axiom == "end":
+			pass
+		elif int(axiom) > 3:
+			print "Wrong axiom"
+		else:
+			axiom = getAxiom(int(axiom))
+			hypotheses.extend(axiom)
+			print hypotheses
+			return modusPonens(hypotheses)
