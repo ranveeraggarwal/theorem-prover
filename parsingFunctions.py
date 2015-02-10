@@ -162,5 +162,5 @@ def getLhs(theExpression):
     if (temp[0][0] == "~"):
         temp[0] = temp[0][1:]
     else:
-        temp[0] = "~" + temp[0]
+        temp[0] = "(" + temp[0] + "->f)"
     return temp[::-1]
