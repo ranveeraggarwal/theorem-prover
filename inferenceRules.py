@@ -3,20 +3,35 @@ import time
 
 
 def getSymbols(Expression):
-    pass
+    symbols = []
+    for char in Expression:
+        if ord(char) >= ord('a') and ord(char) <= ord('z') and char != 'f':
+            symbols.append(char)
+    return symbols
 
 def getAxiom():
     axiom = raw_input("Enter axiom number: ")
     if axiom == "end":
         return False, None
-    elif int(axiom) > 4:
+    elif int(axiom) > 5:
         print "Wrong axiom, try again"
         return getAxiom()
     else:
         with open('axioms.ini', 'r') as f:
             x = f.readlines();
-        temp = x[int(axiom)-1].strip()
-        print temp
+        if int(axiom) <= 4:
+            temp = x[int(axiom)-1].strip()
+        else:
+            temp = raw_input("Enter pre-proved Theorem with apostrophes: ")
+
+        syms = getSymbols(temp)
+        for sym in syms:
+            sym_map = raw_input("Expression for %s': " % sym)
+            temp = temp.replace("%s'" % sym, sym_map)
+        print "Substituded axiom:", temp
+        return True, temp
+        
+        '''
         if int(axiom) == 1 or int(axiom) == 4:
             p_map = raw_input("Expression for p':")
             q_map = raw_input("Expression for q':")
@@ -33,10 +48,13 @@ def getAxiom():
             p_map = raw_input("Expression for p':")
             temp = temp.replace('p\'', p_map)
         else:
-            axiom = raw_input("Enter pre-proved Theorem with apostrophes: ")
-
+            syms = getSymbols(temp)
+            for sym in syms:
+                sym_map = raw_input("Expression for %s': " % sym)
+                temp = temp.replace("%s'" % sym, sym_map)
         print "Substituded axiom:", temp
         return True, temp
+        '''
 
 def stripBrackets(term):
     if checkWhole(term):
