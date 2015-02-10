@@ -1,23 +1,24 @@
 from parsingFunctions import getLhs
 from inferenceRules import modusPonens
 
+DEBUG = False
+
 f = open('expressions.ini')
 f = f.read()
 
 listOfExpressions = f.split("\n")
 
-expr = listOfExpressions[0] #(p->q)->((~p->q)->q)
-print expr
-hypotheses = getLhs(expr) #['(p->q)', '(~p->q)', '~q']
-print hypotheses
-print modusPonens(hypotheses)
+if (DEBUG):
+	expr = listOfExpressions[0] #(p->q)->((~p->q)->q)
+	print expr
+	hypotheses = getLhs(expr) #['(p->q)', '(~p->q)', '~q']
+	print hypotheses
+	print modusPonens(hypotheses)
 
-'''
-We need to prove them false by modus ponens
-'''
-'''
-for expr in listOfExpressions:
-	print "Expression: ", expr
-	print "LHS: ", getLhs(expr)
-
-'''
+else:
+	for expr in listOfExpressions:
+		print "Expression: ", expr
+		hypotheses = getLhs(expr)
+		print "LHS: ", hypotheses
+		print "Running Theorem prover ...\n", modusPonens(hypotheses)
+		print "\n"
