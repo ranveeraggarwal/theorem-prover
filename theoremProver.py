@@ -20,5 +20,6 @@ else:
 		print "Expression: ", expr
 		hypotheses = getLhs(expr)
 		print "LHS: ", hypotheses
-		print "Running Theorem prover ...\n", modusPonens(hypotheses)
-		print "\n"
+		print "Running Theorem prover ..." 
+		modusPonens(hypotheses)
+		print "-------------------------------------------------\n"

@@ -1,14 +1,20 @@
 from parsingFunctions import checkWhole, getLhs
 import time
 
-def getAxiom(index):
-	with open('axioms.ini', 'r') as f:
-		x = f.readlines();
-	temp = x[index-1].strip()
-	print temp
-	return getLhs(temp);
+def getAxiom():
+	axiom = raw_input("Enter axiom number: ")
+	if axiom == "end":
+		return None
+	elif int(axiom) > 3:
+		print "Wrong axiom, try again"
+		return getAxiom()
+	else:
+		with open('axioms.ini', 'r') as f:
+			x = f.readlines();
+		temp = x[int(axiom)-1].strip()
+		print temp
+		return getLhs(temp);
 
-#['p', '(p->q)', '(q->f)']
 def stripBrackets(term):
 	if checkWhole(term):
 		return term[1:-1]
@@ -58,16 +64,10 @@ def modusPonens(hypothesesInit):
 		hypotheses = hypothesesInit[:]
 
 	if "f" in hypothesesInit:
+		print "The Expression is Provable"
 		return True
 	else:
+		axiom = getAxiom()
+		hypotheses.extend(axiom)
 		print hypotheses
-		axiom = raw_input("Enter axiom number: ")
-		if axiom == "end":
-			pass
-		elif int(axiom) > 3:
-			print "Wrong axiom"
-		else:
-			axiom = getAxiom(int(axiom))
-			hypotheses.extend(axiom)
-			print hypotheses
-			return modusPonens(hypotheses)
+		return modusPonens(hypotheses)
